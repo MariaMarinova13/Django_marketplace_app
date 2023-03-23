@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Chat
+{%endblock %}
+
+{% block content %}
+<h1>Chat</h1>
+
+<div class="container-fluid">
+    {% for message in chat.messages.all %}
+        <div class="p-2">
+            <div class="p-3 rounded {% if message.added_by == request.user %} bg-info {% else %} bg-light {% endif %}">
+                <p><strong> {{ message.added_by.username }} </strong> @ {{ message.added_at }}</p>
+                 <p>{{ message.content }}</p>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<form method="post" action="{% url 'chat:detail_chat' chat.id %}" style="padding: 10px">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+
+    {% if form.errors or form.non_field_errors %}
+        <div>
+            {% for field in form %}
+                {{ field.errors }}
+            {% endfor %}
+
+            {{ form.non_field_errors }}
+        </div>
+    {% endif %}
+
+
+   <button class="btn btn-success btn-lg" type="submit">Send</button>
+</form>
+{% endblock %}

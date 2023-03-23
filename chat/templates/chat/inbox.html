@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+Inbox
+{%endblock %}
+
+{% block content %}
+<h1>Inbox</h1>
+
+<div class="container-fluid">
+    {% for chat in chats %}
+    <a href="{% url 'chat:detail_chat' chat.id %}" class="block">
+        <div class=" d-flex p-3 bg-light">
+            <div class="p-2">
+                <img alt="image" class="img-thumbnail" style="width: 64px" src="{{ chat.item.image.url }}">
+            </div>
+
+            <div class="p-2">
+                {% for member in chat.members.all %}
+                {% if member != request.user %}
+                <p><strong> {{ member.username }}</strong> | {{ chat.modified_at }}</p>
+                <p> {{ chat.item.name }}</p>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

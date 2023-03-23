@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}
+    My Items
+{% endblock %}
+
+{% block content %}
+<table class="table table-hover" style="margin:20px;">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Image</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+    <tr>
+    <td>{{ item.name }}</td>
+    <td>
+        <img alt="image" style="width: 64px" src="{% if item.image %}{{ item.image.url }} {% else %}#{% endif %}">
+    </td>
+    <td>{{ item.price }}$</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
