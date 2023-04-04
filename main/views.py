@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from main.forms import NewItemForm, EditItemForm
 from django.db.models import Q
-# Create your views here.
+
 
 def homepage(request):
     return render(request, template_name='main/home.html')
@@ -17,15 +17,7 @@ def itemspage(request):
         items = Item.objects.filter(owner=None)
         categories = Category.objects.all()
         return render(request, template_name='main/items.html', context={'items': items, 'categories': categories})
-    if request.method == 'POST':
-        purchased_item = request.POST.get('purchased-item')
-        if purchased_item:
-            purchased_item_object = Item.objects.get(name=purchased_item)
-            purchased_item_object.owner = request.user
-            purchased_item_object.save()
-            messages.success(request, f'Congratulations! You just bought {purchased_item_object.name} for {purchased_item_object.price}')
 
-        return redirect('items')
 
 def browse(request):
     query = request.GET.get('query', '')
@@ -54,6 +46,7 @@ def detail(request, id):
 
 @login_required
 def new(request):
+
     if request.method == 'POST':
         form = NewItemForm(request.POST or None, request.FILES or None)
         if form.is_valid():
@@ -61,6 +54,7 @@ def new(request):
             item.added_by = request.user
             item.save()
 
+            messages.success(request, f'Your item was added successfully!')
             return redirect('items')
     else:
         form = NewItemForm()
@@ -74,6 +68,7 @@ def edit(request, id):
         form = EditItemForm(request.POST or None, request.FILES or None, instance=item)
         if form.is_valid():
             form.save()
+            messages.success(request, f'Your item was edited successfully!')
             return redirect('items')
     else:
         form = EditItemForm(instance=item)

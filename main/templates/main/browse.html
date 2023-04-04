@@ -8,7 +8,7 @@ Browse
 {% endblock %}
 </head>
 {% block content %}
-<body style="overflow: hidden;">
+<body style="overflow-x: hidden;">
 <div class="position-relative">
 <div class="row">
 <div class="col-2">
@@ -65,7 +65,7 @@ Browse
         Delete
     </button>
      {% else %}
-     <a href="{% url 'chat:new_chat' item.id %}" class="btn btn-info w-50">Contact Seller</a>
+     <a href="{% url 'chat:new_chat' item.id %}" class="btn btn-outline-info w-30">Contact Seller</a>
     {% endif %}
     </td>
     </tr>

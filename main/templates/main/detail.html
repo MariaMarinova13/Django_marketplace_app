@@ -17,14 +17,14 @@
         <p> {{item.description }}</p>
         <h3 class="my-3">Price: {{item.price}} $</h3>
         <p class="text-gray-500"><strong>Seller: </strong>{{ item.added_by.username }}</p>
-        <a href="{% url 'items' %}" class="btn btn-success w-50 align-bottom">Continue Shopping</a>
+        <a href="{% url 'items' %}" class="btn btn-outline-success w-50 align-bottom">Continue Shopping</a>
         {% if request.user == item.added_by %}
 
         <h3 style="margin-top: 40px"> This is your item</h3>
-        <a href="{% url 'edit' item.id %}" class="btn btn-info w-50" style="margin-top: 50px;">Edit</a>
-        <a href="{% url 'delete' item.id %}" class="btn btn-danger w-50" style="margin:20px">Delete</a>
+        <a href="{% url 'edit' item.id %}" class="btn btn-outline-info w-50" style="margin-top: 50px;">Edit</a>
+        <a href="{% url 'delete' item.id %}" class="btn btn-outline-danger w-50" style="margin:20px">Delete</a>
          {% else %}
-         <a href="{% url 'chat:new_chat' item.id %}" class="btn btn-info w-50">Contact Seller</a>
+         <a href="{% url 'chat:new_chat' item.id %}" class="btn btn-outline-info w-50" style="margin:20px">Contact Seller</a>
         {% endif %}
   </div>
 </div>
@@ -36,17 +36,16 @@
     </div>
 </div>
 
-<div class="card bg-light" style="width: 16rem; bg-light; margin: 30px;">
-      {% for item in related_items %}
-  <img src="{{item.image.url}}" class="card-img-top" alt="" >
-  <div class="card-body">
-    <h5 class="card-title">{{ item.name }}</h5>
-    <p class="card-text">{{ item.price }}$</p>
+<div class="" style="display: flex; flex-direction: row;  justify-content: left; align-items: center">
+    {% for item in related_items %}
+  <div class="card bg-light" style="width: 16rem; margin: 20px; text-align:center;">
+      <img src="{{item.image.url}}" class="card-img-top" alt="" style="height: 300px; justify-content:center;">
+    <h5 style="padding-top:10px;">{{ item.name }}</h5>
+    <p>{{ item.price }}$</p>
     <a href="{% url 'detail' item.id %}" class="btn btn-primary stretched-link">View More</a>
   </div>
     {% endfor %}
 </div>
-
 
 
 {% endblock %}
