@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from main.models import Item, Category
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
@@ -84,9 +84,9 @@ def dashboard(request):
 def delete(request, id):
     item = get_object_or_404(Item, id=id, added_by=request.user)
     item.delete()
+    messages.success(request, 'Item was deleted!')
 
-    return redirect('my_items')
-
+    return redirect('items')
 
 def loginpage(request):
 

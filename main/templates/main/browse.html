@@ -1,86 +1,76 @@
-{% extends 'main/base.html' %}
-{% load static %}
+{% extends 'main/base.html' %} {% load static %}
 <head>
-
-
-{% block title %}
-Browse
-{% endblock %}
+    {% block title %} Browse {% endblock %}
 </head>
 {% block content %}
 <body style="overflow-x: hidden;">
-<div class="position-relative">
-<div class="row">
-<div class="col-2">
-<nav class ="navbar" id="sidebar">
-    <form method="get" action="{%url 'browse' %}">
-        <input id="search" name="query" class="form-control" type="text" value="{{ query }}" placeholder="Search" style="margin-top:20px;">
-        <button class="btn btn-md" id="searchbtn">Search</button>
-    </form>
+    <div class="position-relative">
+        <div class="row">
+            <div class="col-2">
+                <nav class="navbar" id="sidebar">
+                    <form method="get" action="{%url 'browse' %}">
+                        <input id="search" name="query" class="form-control" type="text" value="{{ query }}" placeholder="Search" style="margin-top: 20px;" />
+                        <button class="btn btn-md" id="searchbtn">Search</button>
+                    </form>
 
-<ul class ="nav navbar-nav" id="categories"> <h5> Categories </h5>
-    {% for category in categories %}
-<li class ="nav-item {% if category.id == category_id %} bg-gray {% endif %}">
+                    <ul class="nav navbar-nav" id="categories">
+                        <h5>Categories</h5>
+                        {% for category in categories %}
+                        <li class="nav-item {% if category.id == category_id %} bg-gray {% endif %}">
+                            <a href="{% url 'browse' %}?query={{ query }}&category={{ category.id }} " id="category-name">{{ category.name }}</a>
+                        </li>
+                        {% endfor %}
+                        <li><a href="{% url 'browse' %}" class="btn" id="clearbtn"> Clear filters </a></li>
+                    </ul>
+                    <br />
+                </nav>
+            </div>
+            <div class="col-9">
+                <div class="container-fluid"></div>
+                <div class="container-fluid">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in items %} {% include 'main/includes/items_modals.html' %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>
+                                    {% if item.image %}
+                                    <img alt="image" style="width: 64px;" src="{{ item.image.url }}" />
+                                    {% else %}
+                                    <img alt="image" style="width: 64px;" src="/media/item_images/no_image.png" />
+                                    {% endif %}
+                                </td>
+                                <td>{{ item.price }}$</td>
 
-<a href="{% url 'browse' %}?query={{ query }}&category={{ category.id }} " id="category-name">{{ category.name }}</a>
-</li>
-     {% endfor %}
-     <li><a href="{% url 'browse' %}" class="btn" id="clearbtn"> Clear filters </a> </li>
-</ul>
-<br>
-
-</nav>
-</div>
-<div class="col-9">
-<div class="container-fluid">
-
-</div>
-<div class ="container-fluid">
-<table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Image</th>
-        <th scope="col">Price</th>
-        <th scope="col">Options</th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for item in items %}
-    {% include 'main/includes/items_modals.html' %}
-    <tr>
-    <td>{{ item.name }}</td>
-    <td>
-        <img alt="image" style="width: 64px" src="{% if item.image %}{{ item.image.url }} {% else %}#{% endif %}">
-    </td>
-    <td>{{ item.price }}$</td>
-
-    <td>
-   <button type="button" class="btn btn-outline-primary">
-       <a href="{% url 'detail' item.id %}"> More Info</a>
-    </button>
-    {% if request.user == item.added_by %}
-    <a href="{% url 'edit' item.id %}" class="btn btn-outline-info">Edit</a>
-    <button type="button" style="margin:20px" class="btn btn-outline-danger" data-toggle="modal" data-target="#Modal-DeleteConfirm{{ item.pk }}">
-        Delete
-    </button>
-     {% else %}
-     <a href="{% url 'chat:new_chat' item.id %}" class="btn btn-outline-info w-30">Contact Seller</a>
-    {% endif %}
-    </td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-
-</div>
-</div>
-</div>
-</div>
-
-
+                                <td>
+                                    <button type="button" class="btn btn-outline-primary">
+                                        <a href="{% url 'detail' item.id %}"> More Info</a>
+                                    </button>
+                                    {% if request.user == item.added_by %}
+                                    <a href="{% url 'edit' item.id %}" class="btn btn-outline-info">Edit</a>
+                                    <button type="button" style="margin: 20px;" class="btn btn-outline-danger" data-toggle="modal" data-target="#Modal-DeleteConfirm{{ item.pk }}">
+                                        Delete
+                                    </button>
+                                    {% else %}
+                                    <a href="{% url 'chat:new_chat' item.id %}" class="btn btn-outline-info w-30" style="margin: 20px;">Contact Seller</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-
-
 
 {% endblock %}

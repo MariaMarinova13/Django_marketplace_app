@@ -13,7 +13,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form method="POST">
+        <form method="POST" action="{% url 'delete' item.id %}">
             {% csrf_token %}
             <h4 class="text-center">
 
@@ -24,7 +24,7 @@
             </h6>
             <br>
             <input type="hidden" name="deleted-item" value="{{ item.name }}">
-            <button class="btn btn-outline-danger">Delete</button>
+            <button type="submit" class="btn btn-outline-danger btn-block">Delete</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -35,4 +35,3 @@
     </div>
   </div>
 </div>
-
